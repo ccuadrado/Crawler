@@ -5,14 +5,7 @@ class TwitterUserTest < ActiveSupport::TestCase
      assert true
    end
    
-   test "All records have usernames" do
-	hasName = true
-        TwitterUser.all
-	TwitterUser.each do |t|
-            if(t.username.nil?)
-              hasName = false
-            end
-        end
-
-   end
+   test "A hashtag value will return a search term" do
+     assert TwitterUser.analyze_hashtag('#SyRia') == 'syria'
+   end  
 end
