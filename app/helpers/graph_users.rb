@@ -13,4 +13,10 @@ module GraphUsers
     end
   users
   end
+
+  def get_followers_from_userlist(list)
+     friendslist = Hash.new
+     list.map { |x| friendslist[x] = Twitter.follower_ids(x).ids }
+     friendslist
+  end
 end
