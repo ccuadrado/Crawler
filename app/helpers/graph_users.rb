@@ -9,14 +9,14 @@ module GraphUsers
     users = Set.new
     15.times do |t|
     result = Twitter.search(tag.to_s,{:rpp => 100, :page => t+1, :with_twitter_user_id => 1})
-    result.map { |tweet| users.include?(tweet.from_user) ?  puts("Duplicate Detected") : users.add(tweet.from_user) }    
+    result.map { |tweet| users.include?(tweet.from_user_id) ?  puts("Duplicate Detected") : users.add(tweet.from_user_id) }    
     end
   users
   end
 
   def get_followers_from_userlist(list)
      friendslist = Hash.new
-     list.map { |x| friendslist[x] = Twitter.follower_ids(x).ids }
+     list.map { |x| Twitter.rate_limit_status.remaining_hits > 1 ? friendslist[x] = Twitter.follower_ids(x).ids : sleep(3700); friendslist[x] = Twitter.follower_ids(x).ids }
      friendslist
   end
 end
