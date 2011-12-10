@@ -16,8 +16,16 @@ module GraphUsers
 
   def get_followers_from_userlist(list)
      friendslist = Hash.new
-     list.map { |x| Twitter.rate_limit_status.remaining_hits > 1 ? friendslist[x] = Twitter.follower_ids(x).ids : sleep(3700); puts("Going to sleep for 1 hour"); friendslist[x] = Twitter.follower_ids(x).ids }
-     friendslist
+     list.map do |x| 
+       if(Twitter.rate_limit_status.remaining_hits > 1)
+          friendslist[x] = Twitter.follower_ids(x).ids
+       else
+         puts("Going to sleep for 1 hour")
+         sleep(3700) 
+         friendslist[x] = Twitter.follower_ids(x).ids
+       end
+     end
+    friendslist
   end
 
   def save_friendslist(friendslist)
